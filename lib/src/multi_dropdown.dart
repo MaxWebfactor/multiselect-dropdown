@@ -7,10 +7,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 part 'controllers/future_controller.dart';
+
 part 'controllers/multiselect_controller.dart';
+
 part 'enum/enums.dart';
+
 part 'models/decoration.dart';
+
 part 'models/dropdown_item.dart';
+
 // part 'models/network_request.dart';
 part 'widgets/dropdown.dart';
 
@@ -106,6 +111,7 @@ class MultiDropdown<T extends Object> extends StatefulWidget {
     this.onSelectionChange,
     this.onSearchChange,
     this.closeOnBackButton = false,
+    this.showOnTop,
     Key? key,
   })  : future = null,
         super(key: key);
@@ -154,6 +160,7 @@ class MultiDropdown<T extends Object> extends StatefulWidget {
     this.onSelectionChange,
     this.onSearchChange,
     this.closeOnBackButton = false,
+    this.showOnTop,
     Key? key,
   })  : items = const [],
         super(key: key);
@@ -224,6 +231,9 @@ class MultiDropdown<T extends Object> extends StatefulWidget {
   ///
   /// Note: This option requires the app to have a router, such as MaterialApp.router, in order to work properly.
   final bool closeOnBackButton;
+
+  /// Forces the dropdown to be displayed on top of the field or not.
+  final bool? showOnTop;
 
   @override
   State<MultiDropdown<T>> createState() => _MultiDropdownState<T>();
@@ -404,8 +414,12 @@ class _MultiDropdownState<T extends Object> extends State<MultiDropdown<T>> {
                 renderBoxOffset.dy -
                 renderBoxSize.height;
 
-            final showOnTop =
+            bool showOnTop =
                 availableHeight < widget.dropdownDecoration.maxHeight;
+
+            if (widget.showOnTop != null) {
+              showOnTop = widget.showOnTop!;
+            }
 
             final stack = Stack(
               children: [
